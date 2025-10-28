@@ -66,15 +66,39 @@ function App(){
         })
       })
   }
+
+  function onDeleteNote(id: string){
+    setNotes(prevNotes => {
+      return prevNotes.filter(note => note.id !== id)
+    })
+  }
   function addTag(tag: Tag){
     setTags(prev => [...prev, tag])
+  }
+
+  function updateTag(id:string, label:string){
+      setTags(prevTags => {
+        return prevTags.map(tag => {
+          if(tag.id === id){
+            return {...tag, label}
+          }else{
+            return tag
+          }
+        })
+      })
+  }
+
+  function deleteTag(id:string){
+     setTags(prevTags => {
+      return prevTags.filter(tag => tag.id !== id)
+    })
   }
 
 
   return (
   <Container className="my-4"> 
     <Routes>
-      <Route path="/" element={<NoteList notes={notesWithTags} availableTags={tags}/>}/>
+      <Route path="/" element={<NoteList notes={notesWithTags} availableTags={tags} onUpdateTag={updateTag} onDeleteTag={deleteTag}/>}/>
       <Route path="/new" element={
         <NewNote 
             onSubmit={onCreateNote} 
@@ -83,7 +107,7 @@ function App(){
             
             />}/>
         <Route path="/:id" element={<NoteLayout notes={notesWithTags}/>}>
-          <Route index element={<Note/>}/>
+          <Route index element={<Note  onDelete={onDeleteNote}/>}/>
           <Route path="edit" element={<EditNote 
               onSubmit={onUpdateNote}
               onAddTag={addTag}
