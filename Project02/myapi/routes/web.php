@@ -2,6 +2,9 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+
+use App\Http\Controllers\NoteController;
+use App\Http\Controllers\TagController;
+
+Route::apiResource('api/notes', NoteController::class);
+Route::apiResource('api/tags', TagController::class);
